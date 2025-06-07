@@ -1,0 +1,17 @@
+.centered-container {
+    display: flex;
+    justify-content: center; /* Horizontally center */
+    align-items: center; /* Vertically center (if container had a fixed height) */
+    width: 100%;
+}
+
+.problem-textarea {
+    width: 70%; /* Make textarea take up 70% of its container */
+    max-width: 800px; /* Optional: set a max width */
+    min-height: 150px; /* Ensure a decent minimum height */
+}
+
+/* Ensure spinner and message are also centered if they appear */
+.slds-align_absolute-center p {
+    text-align: center;
+}

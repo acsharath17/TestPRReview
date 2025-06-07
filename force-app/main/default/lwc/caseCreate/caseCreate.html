@@ -1,0 +1,70 @@
+<template>
+    <lightning-card title="Problem Description Analyzer 1" icon-name="standard:solution">
+        <div class="slds-var-m-around_medium">
+
+            <!-- Centered Input Area -->
+            <div class="centered-container slds-var-m-bottom_large">
+                <lightning-textarea
+                    name="problemDescription"
+                    label="Enter Problem Description"
+                    value={problemDescription}
+                    onchange={handleProblemChange}
+                    required
+                    placeholder="Describe the issue in detail..."
+                    class="problem-textarea">
+                </lightning-textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="slds-align_absolute-center slds-var-m-bottom_medium">
+                <lightning-button
+                    label="Submit"
+                    variant="brand"
+                    onclick={handleSubmit}
+                    disabled={isLoading}>
+                </lightning-button>
+            </div>
+
+            <!-- Loader -->
+            <template if:true={isLoading}>
+                <div class="slds-var-m-vertical_medium slds-align_absolute-center">
+                    <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                    <p class="slds-var-m-top_small">Analyzing your problem, please wait...</p>
+                </div>
+            </template>
+
+            <!-- API Response Display -->
+            <template if:true={apiResponse}>
+                <div class="slds-var-m-top_large slds-box slds-theme_shade">
+                    <!-- Answer -->
+                    <template if:true={apiResponse.answer}>
+                        <h3 class="slds-text-heading_medium slds-var-m-bottom_small">Suggested Answer:</h3>
+                        <p class="slds-var-m-bottom_medium">{apiResponse.answer}</p>
+                    </template>
+
+                    <!-- Knowledge Articles Table -->
+                    <template if:true={hasKnowledgeArticles}>
+                        <h3 class="slds-text-heading_medium slds-var-m-bottom_small">Relevant Knowledge Articles:</h3>
+                        <lightning-datatable
+                            key-field="Id"
+                            data={formattedKnowledgeArticles}
+                            columns={articleColumns}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </template>
+
+                    <template if:false={hasKnowledgeArticles}>
+                         <p if:true={apiResponse.related_articles}>No knowledge articles found matching your criteria.</p>
+                    </template>
+                </div>
+            </template>
+
+             <!-- Error Message Display -->
+            <template if:true={error}>
+                <div class="slds-var-m-top_large slds-text-color_error">
+                    <p><strong>Error:</strong> {error}</p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>
